@@ -1,5 +1,8 @@
 package local;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URI;
@@ -14,15 +17,23 @@ public class Main {
             URI uri = new URI(scxTestUrl);  // Convert the string to a URL object
             URL url = uri.toURL();
             connection = (HttpURLConnection) url.openConnection(); // Open a connection
-            connection.setRequestMethod("GET"); // Specify it's a GET request
+            connection.setRequestMethod("GET"); // Specify that it is GET request
+
             int responseCode = connection.getResponseCode();
             System.out.println("Response code: " + responseCode);
+
+            InputStream inputStream = connection.getInputStream();
+            InputStreamReader inputReader = new InputStreamReader(inputStream);
+            BufferedReader buffReader = new BufferedReader(inputReader);
+
+            String line;
+            while ((line = buffReader.readLine()) != null) {
+                System.out.println(line);
+            }
 
         } catch (Exception e) {
             e.printStackTrace(); // If anything goes wrong, print the error
         }
 
-
     }
-
 }
